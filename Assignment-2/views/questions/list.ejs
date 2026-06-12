@@ -1,0 +1,41 @@
+<%- include('../partials/header') %>
+
+<h2>Question List</h2>
+<a href="/questions/create" class="btn btn-success mb-3">Create New Question</a>
+
+<table class="table table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Text</th>
+            <th>Correct Index</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% if(questions && questions.length > 0) { %>
+            <% questions.forEach(q => { %>
+                <tr>
+                    <td><%= q._id || q.Object_id %></td>
+                    <td>
+                        <a href="/questions/<%= q._id || q.Object_id %>" class="text-decoration-none">
+                            <%= q.text %>
+                        </a>
+                    </td>
+                    <td><%= q.correctAnswerIndex %></td>
+                    <td>
+                        <a href="/questions/<%= q._id || q.Object_id %>" class="btn btn-info btn-sm">Details</a>
+                        <a href="/questions/<%= q._id || q.Object_id %>/edit" class="btn btn-warning btn-sm">Edit</a>
+                        <form action="/questions/<%= q._id || q.Object_id %>?_method=DELETE" method="POST" style="display:inline;">
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            <% }) %>
+        <% } else { %>
+            <tr><td colspan="4" class="text-center">No questions found.</td></tr>
+        <% } %>
+    </tbody>
+</table>
+
+<%- include('../partials/footer') %>

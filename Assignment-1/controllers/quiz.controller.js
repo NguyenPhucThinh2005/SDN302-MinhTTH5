@@ -53,7 +53,13 @@ exports.deleteQuiz = async (req, res) => {
   try {
     const deletedQuiz = await Quiz.findByIdAndDelete(req.params.quizId);
     if (!deletedQuiz) return res.status(404).json({ message: 'Quiz not found' });
-    res.status(200).json({ message: 'Quiz deleted successfully' });
+    
+    // Delete associated questions
+    if (deletedQuiz.questions && deletedQuiz.questions.length > 0) {
+      await Question.deleteMany({ _id: { $in: deletedQuiz.questions } });
+    }
+
+    res.status(200).json({ message: 'Quiz and associated questions deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

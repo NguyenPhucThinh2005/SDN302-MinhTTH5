@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 
@@ -13,7 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 const userRoutes = require('./routes/user.route');
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/SimpleQuiz')
+mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/SimpleQuiz')
   .then(() => console.log('Connected to MongoDB: SimpleQuiz'))
   .catch((err) => console.error('Could not connect to MongoDB', err));
 

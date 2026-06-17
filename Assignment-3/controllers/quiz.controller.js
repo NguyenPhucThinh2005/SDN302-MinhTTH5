@@ -14,7 +14,11 @@ exports.getAllQuizzes = async (req, res) => {
 // Create a new quiz
 exports.createQuiz = async (req, res) => {
   try {
-    const newQuiz = new Quiz(req.body);
+    const quizData = req.body;
+    if (req.user) {
+      quizData.author = req.user._id;
+    }
+    const newQuiz = new Quiz(quizData);
     const savedQuiz = await newQuiz.save();
     res.status(201).json(savedQuiz);
   } catch (error) {

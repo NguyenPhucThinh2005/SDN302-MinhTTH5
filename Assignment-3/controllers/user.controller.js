@@ -37,7 +37,16 @@ exports.login = async (req, res, next) => {
         }
 
         const token = authenticate.getToken({ _id: user._id, admin: user.admin });
-        res.status(200).json({ success: true, token: token, message: "You are successfully logged in!" });
+        res.status(200).json({ 
+            success: true, 
+            token: token, 
+            message: "You are successfully logged in!",
+            user: {
+                _id: user._id,
+                username: user.username,
+                admin: user.admin
+            }
+        });
     } catch (err) {
         res.status(500).json({ success: false, message: err.message });
     }

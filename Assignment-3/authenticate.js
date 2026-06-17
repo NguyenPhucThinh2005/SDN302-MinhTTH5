@@ -1,8 +1,9 @@
 const jwt = require('jsonwebtoken');
 const Question = require('./models/question.model');
+const Quiz = require('./models/quiz.model');
 
 // Secret key for JWT
-const SECRET_KEY = process.env.SECRET_KEY || "assignment3_secret_key";
+const SECRET_KEY = process.env.JWT_SECRET || process.env.SECRET_KEY || "assignment3_secret_key";
 
 exports.getToken = function(user) {
     return jwt.sign(user, SECRET_KEY, { expiresIn: 3600 });
@@ -49,6 +50,25 @@ exports.verifyAuthor = async (req, res, next) => {
             next();
         } else {
             return res.status(403).json({ success: false, message: "You are not the author of this question" });
+        }
+    } catch (err) {
+        return res.status(500).json({ success: false, message: err.message });
+    }
+};
+
+exports.verifyQuizAuthor = async (req, res, next) => {
+    try {
+        const quizId = req.params.quizId;
+        const quiz = await Quiz.findById(quizId);
+        if (!quiz) {
+            return res.status(404).json({ success: false, message: "Quiz not found" });
+        }
+        
+        // Admin must be the author of the quiz
+        if (quiz.author && quiz.author.toString() === req.user._id.toString()) {
+            next();
+        } else {
+            return res.status(403).json({ success: false, message: "You are not the author of this quiz" });
         }
     } catch (err) {
         return res.status(500).json({ success: false, message: err.message });

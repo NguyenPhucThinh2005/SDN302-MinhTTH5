@@ -1,0 +1,33 @@
+<%- include('../partials/header.hbs') %>
+
+<h2>Question Details</h2>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <h5 class="card-title"><%= question.text %></h5>
+        <h6 class="card-subtitle mb-2 text-muted">Correct Answer Index: <%= question.correctAnswerIndex %></h6>
+        <p class="card-text">
+            <strong>Options:</strong>
+            <ul>
+                <% if(question.options) { question.options.forEach((opt, idx) => { %>
+                    <li><%= opt %> <% if(idx === question.correctAnswerIndex) { %> <span class="badge bg-success">Correct</span> <% } %></li>
+                <% }) } %>
+            </ul>
+        </p>
+        <p class="card-text">
+            <strong>Keywords:</strong>
+            <% if(question.keywords && question.keywords.length > 0) { %>
+                <% question.keywords.forEach(kw => { %>
+                    <span class="badge bg-info text-dark"><%= kw %></span>
+                <% }) %>
+            <% } else { %>
+                <em>None</em>
+            <% } %>
+        </p>
+    </div>
+</div>
+
+<a href="/questions" class="btn btn-secondary mt-3">Back to List</a>
+<a href="/questions/<%= question._id || question.Object_id %>/edit" class="btn btn-warning mt-3 ms-2">Edit</a>
+
+<%- include('../partials/footer.hbs') %>

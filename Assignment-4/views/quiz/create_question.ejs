@@ -1,0 +1,26 @@
+<%- include('../partials/header.hbs') %>
+
+<h2>Add Question to Quiz: <span class="text-primary"><%= quiz.title %></span></h2>
+
+<form action="/quizzes/<%= quiz._id || quiz.Object_id %>/questions" method="POST">
+    <div class="mb-3">
+        <label for="text" class="form-label">Question Text</label>
+        <input type="text" class="form-control" id="text" name="text" required>
+    </div>
+    <div class="mb-3">
+        <label for="options" class="form-label">Options (comma separated)</label>
+        <input type="text" class="form-control" id="options" name="options" required placeholder="Option A, Option B, Option C">
+    </div>
+    <div class="mb-3">
+        <label for="correctAnswerIndex" class="form-label">Correct Answer Index (0-based)</label>
+        <input type="number" class="form-control" id="correctAnswerIndex" name="correctAnswerIndex" required min="0">
+    </div>
+    <div class="mb-3">
+        <label for="keywords" class="form-label">Keywords (comma separated)</label>
+        <input type="text" class="form-control" id="keywords" name="keywords">
+    </div>
+    <button type="submit" class="btn btn-primary">Add Question</button>
+    <a href="/quizzes/<%= quiz._id || quiz.Object_id %>" class="btn btn-secondary">Cancel</a>
+</form>
+
+<%- include('../partials/footer.hbs') %>
